@@ -181,7 +181,7 @@ npm run seed
 The script reads data from:
 
 ```txt
-data-generator.json
+seed-data.json
 ```
 
 and inserts the generated customers and invoices into MongoDB.
