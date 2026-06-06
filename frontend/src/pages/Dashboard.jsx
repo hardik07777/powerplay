@@ -95,9 +95,10 @@ const [dueDateTo, setDueDateTo] = useState("");
         />
        
         {/* Filters */}
-<div className="p-4 border-b flex gap-3 items-center flex-wrap">
+<div className="p-4 border-b">
+      <div className="flex gap-3 items-center flex-wrap">
 
-  <input
+    <input
     type="text"
     placeholder="Search invoice / customer"
     value={search}
@@ -141,19 +142,72 @@ const [dueDateTo, setDueDateTo] = useState("");
     <option value="18">18%</option>
     <option value="28">28%</option>
   </select>
+  </div>
 
- 
-<input
-  type="date"
-  value={dueDateFrom}
-  onChange={(e) => {
-    setPage(1);
-    setDueDateFrom(e.target.value);
-  }}
-  className="border rounded-xl px-4 py-3 w-[180px]"
-/>
+ <div className="flex gap-3 flex-wrap mt-3">
+
+  <div className="flex flex-col">
+    <label className="text-xs text-gray-500 mb-1">
+      Issue From
+    </label>
+    <input
+      type="date"
+      value={issueDateFrom}
+      onChange={(e) => {
+        setPage(1);
+        setIssueDateFrom(e.target.value);
+      }}
+      className="border rounded-xl px-4 py-3 w-[170px]"
+    />
+  </div>
+
+  <div className="flex flex-col">
+    <label className="text-xs text-gray-500 mb-1">
+      Issue To
+    </label>
+    <input
+      type="date"
+      value={issueDateTo}
+      onChange={(e) => {
+        setPage(1);
+        setIssueDateTo(e.target.value);
+      }}
+      className="border rounded-xl px-4 py-3 w-[170px]"
+    />
+  </div>
+
+  <div className="flex flex-col">
+    <label className="text-xs text-gray-500 mb-1">
+      Due From
+    </label>
+    <input
+      type="date"
+      value={dueDateFrom}
+      onChange={(e) => {
+        setPage(1);
+        setDueDateFrom(e.target.value);
+      }}
+      className="border rounded-xl px-4 py-3 w-[170px]"
+    />
+  </div>
+
+  <div className="flex flex-col">
+    <label className="text-xs text-gray-500 mb-1">
+      Due To
+    </label>
+    <input
+      type="date"
+      value={dueDateTo}
+      onChange={(e) => {
+        setPage(1);
+        setDueDateTo(e.target.value);
+      }}
+      className="border rounded-xl px-4 py-3 w-[170px]"
+    />
+  </div>
 
 </div>
+    </div>
 
           
           
