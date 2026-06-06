@@ -1,50 +1,43 @@
 # Invoice Management Dashboard
 
-A full-stack Invoice Management Dashboard built using React, Node.js, Express, MongoDB, and Mongoose.
+A full-stack invoice management application built with React, Node.js, Express, MongoDB, and Mongoose.
+
+---
 
 ## Features
 
-### Invoice Dashboard
+### Dashboard
 
-* Paginated invoice table
-* Search invoices and customers
-* Filter invoices by:
-
-  * Status
-  * Tax Rate
-  * Issue Date Range
-  * Due Date Range
-* Sort invoices by:
-
-  * Amount
-  * Due Date
-
-### Invoice Management
-
-* Create new invoices
-* Edit existing invoices
-* Automatic tax calculation
-* Automatic total amount calculation
-
-### Customer Profile
-
-* Customer details
-* Company information
-* Complete invoice history
-* Customer summary metrics:
-
-  * Total billed
-  * Total tax
-  * Outstanding amount
-  * Invoice count
+- Paginated invoice table
+- Search invoices/customers
+- Filter by:
+  - Status
+  - Tax Rate
+  - Issue Date Range
+  - Due Date Range
+- Sort by:
+  - Amount
+  - Due Date
+- Create Invoice
+- Edit Invoice
 
 ### Summary Dashboard
 
-* Total revenue
-* Total tax collected
-* Total invoices
-* Total customers
-* Top 5 customers by billed value
+- Total Revenue
+- Total Tax Collected
+- Total Customers
+- Total Invoices
+- Top 5 Customers by Revenue
+
+### Customer Profile
+
+- Customer information
+- Company details
+- Customer invoice history
+- Total billed amount
+- Total tax
+- Outstanding amount
+- Invoice count
 
 ---
 
@@ -52,17 +45,77 @@ A full-stack Invoice Management Dashboard built using React, Node.js, Express, M
 
 ### Frontend
 
-* React
-* React Router
-* Axios
-* Tailwind CSS
+- React
+- React Router
+- Axios
+- Tailwind CSS
 
 ### Backend
 
-* Node.js
-* Express.js
-* MongoDB Atlas
-* Mongoose
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+
+---
+
+## Data Models
+
+### Customer
+
+```js
+{
+  name: String,
+  company: String,
+  createdAt: Date
+}
+```
+
+### Invoice
+
+```js
+{
+  invoiceId: String,
+  customer: ObjectId,
+  customerName: String,
+
+  amount: Number,
+  taxRate: Number,
+
+  tax: Number,
+  total: Number,
+
+  status: String,
+
+  issueDate: Date,
+  dueDate: Date,
+
+  createdAt: Date
+}
+```
+
+---
+
+## Data Modeling Rationale
+
+Customers and invoices are modeled as separate collections.
+
+### Why separate collections?
+
+- One customer can have many invoices.
+- Avoids duplicating customer information across invoices.
+- Makes customer profile aggregation simpler.
+- Supports invoice history and customer metrics efficiently.
+
+### Why store customerName in Invoice?
+
+Customer name is denormalized and stored in the invoice for:
+
+- Faster invoice listing
+- Easier searching
+- Reduced joins for common queries
+
+The customer ObjectId remains the source of truth.
 
 ---
 
@@ -72,30 +125,34 @@ A full-stack Invoice Management Dashboard built using React, Node.js, Express, M
 
 ```bash
 git clone <repository-url>
-cd invoice-management-dashboard
+cd powerplay
 ```
 
-### Backend Setup
+---
+
+## Backend Setup
 
 ```bash
 cd backend
 npm install
 ```
 
-Create a `.env` file inside the backend folder:
+Create `.env`
 
 ```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 ```
 
-Run backend:
+Run server
 
 ```bash
 npm run dev
 ```
 
-### Frontend Setup
+---
+
+## Frontend Setup
 
 ```bash
 cd frontend
@@ -103,28 +160,31 @@ npm install
 npm run dev
 ```
 
-Frontend runs at:
+Frontend runs on:
 
-```text
+```txt
 http://localhost:5173
-```
-
-Backend runs at:
-
-```text
-http://localhost:5000
 ```
 
 ---
 
-## Seed Data
+## Seed Script
 
-To populate the database with sample data:
+The project includes a seed script for importing invoice/customer data into MongoDB.
+
+Run:
 
 ```bash
-cd backend
 npm run seed
 ```
+
+The script reads data from:
+
+```txt
+data-generator.json
+```
+
+and inserts the generated customers and invoices into MongoDB.
 
 ---
 
@@ -142,72 +202,42 @@ PUT    /api/invoices/:id
 ### Customers
 
 ```http
-GET /api/customers
-GET /api/customers/:id
+GET    /api/customers
+GET    /api/customers/:id
 ```
 
 ### Summary
 
 ```http
-GET /api/summary
+GET    /api/summary
 ```
-
----
-
-## Data Models
-
-### Customer
-
-```js
-{
-  name: String,
-  company: String
-}
-```
-
-### Invoice
-
-```js
-{
-  invoiceId: String,
-  customer: ObjectId,
-  customerName: String,
-  amount: Number,
-  taxRate: Number,
-  tax: Number,
-  total: Number,
-  status: String,
-  issueDate: Date,
-  dueDate: Date
-}
-```
-
----
-
-## Data Modeling Rationale
-
-* Customer and Invoice are stored in separate collections.
-* Invoices reference customers using MongoDB ObjectIds.
-* customerName is stored inside invoices for easier searching and reporting.
-* tax and total are stored instead of calculated during every query to improve read performance.
-* Indexes are added on commonly queried fields such as status, amount, issueDate, and dueDate.
 
 ---
 
 ## Assumptions
 
-* Supported tax rates are: 0%, 3%, 5%, 18%, and 28%.
-* Every invoice belongs to exactly one customer.
-* Search is case-insensitive.
-* Pagination is enabled for invoice listings.
-* Amounts are stored in INR (₹).
+- Invoice IDs are generated automatically.
+- Tax amount is calculated from amount and tax rate.
+- Total = Amount + Tax.
+- Customers may have multiple invoices.
+- Customer names are stored in invoices for faster searching and listing.
+- Pagination is performed server-side.
+- Sorting is performed server-side.
+- Filtering is performed server-side.
 
 ---
 
 ## Future Improvements
 
-* Authentication & Authorization
-* Export invoices as PDF
-* Advanced analytics dashboard
-* Customer management CRUD
-* Dark mode support
+- Delete invoices
+- Authentication
+- Export invoices to PDF
+- Advanced analytics
+- Customer creation UI
+- Dark mode
+
+---
+
+## Author
+
+Hardik Goel
